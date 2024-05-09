@@ -8,8 +8,8 @@ public class Movement {
     private int duration;
 
     // pointer
-    private List<Movement> nextMovements;
-    private List<Movement> nextProhibitedMovements;
+    /*private List<Movement> nextMovements;
+    private List<Movement> nextProhibitedMovements;*/
 
     /*public Movement (String n, int t, int d) {
         this.name = n;
@@ -19,13 +19,13 @@ public class Movement {
         this.nextProhibitedMovements = new ArrayList<Movement>();
     }*/
 
-    public Movement (String n, int t, int d, List<Movement> nexts, List<Movement> prohibited) {
+    public Movement (String n, int t, int d/*, List<Movement> nexts, List<Movement> prohibited*/) {
         this.name = n;
         this.movementType = t;
         this.duration = d;
 
-        this.nextMovements = new ArrayList<Movement>(nexts);
-        this.nextProhibitedMovements = new ArrayList<Movement>(prohibited);
+        /*this.nextMovements = new ArrayList<Movement>(nexts);
+        this.nextProhibitedMovements = new ArrayList<Movement>(prohibited);*/
     }
 
     public String getName() {
@@ -40,7 +40,7 @@ public class Movement {
         return this.duration;
     }
 
-    public boolean checkNextValid (List<Movement> futureMovements) {
+    /*public boolean checkNextValid (List<Movement> futureMovements) {
         if (this.nextMovements.size() == 0) {
             return true;
         } else if (this.nextMovements.size() != futureMovements.size()) {
@@ -68,5 +68,5 @@ public class Movement {
         }
 
         return true;
-    }
+    }*/
 }
