@@ -12,8 +12,7 @@ public class Graph<T> {
 
   /**
    * Adds a vertex to the graph.
-   * Params:
-   *   vertex: the vertex to be added. 
+   * @param vertex: the vertex to be added. 
    */
   public void addVertex(T vertex) {
     if (this.adjList.get(vertex) != null) {
@@ -27,9 +26,8 @@ public class Graph<T> {
 
   /**
    * Adds a vertex to the graph.
-   * Params:
-   *   vertex: the vertex to be added. 
-   *   neighbors: the neighbors of the vertex
+   * @param vertex: the vertex to be added. 
+   * @param neighbors: the neighbors of the vertex
    */
   public void addVertex(T vertex, List<T> neighbors) {
     if (this.adjList.get(vertex) != null) {
@@ -42,9 +40,8 @@ public class Graph<T> {
 
   /**
    * Adds an edge to an existing vertex
-   * Params:
-   *   vertex: the vertex to be added. 
-   *   neighbors: the neighbors of the vertex
+   * @param vertex: the vertex to be added. 
+   * @param neighbors: the neighbors of the vertex
    */
   public void addEdge(T v1, T v2) {
     if (this.adjList.get(v1) == null) {
@@ -61,8 +58,7 @@ public class Graph<T> {
 
   /**
    * Finds the size of the graph (the number of vertices)
-   * Returns:
-   *   int: the number of vertices in the graph
+   * @return int: the number of vertices in the graph
    */
   public int getVertexCount() {
     return this.adjList.size();
@@ -70,10 +66,8 @@ public class Graph<T> {
 
   /**
    * Checks if the vertex is in the graph.  
-   * Params:
-   *   vertex: the vertex to be checked
-   * Returns:
-   *   boolean: whether the vertex is in the graph
+   * @param vertex: the vertex to be checked
+   * @return boolean: whether the vertex is in the graph
    */
   public boolean hasVertex(T vertex) {
     return (this.adjList.get(vertex) != null);
@@ -81,10 +75,8 @@ public class Graph<T> {
 
   /**
    * Finds all the neighbors of a vertex.
-   * Params:
-   *   vertex: the vertex that needs to have its neighbors found
-   * Returns:
-   *   List<T>: the list of the neighbors of the vertex
+   * @param vertex: the vertex that needs to have its neighbors found
+   * @return List<T>: the list of the neighbors of the vertex
    */
   public List<T> neighbors(T vertex) {
     return this.adjList.get(vertex);
@@ -92,11 +84,9 @@ public class Graph<T> {
 
   /**
    * Checks if two vertices of neighbors of each other
-   * Params:
-   *   v1: the first vertex
-   *   v2: the second vertex
-   * Returns:
-   *   boolean: whether the two vertices provided are neighbots
+   * @param v1: the first vertex
+   * @param v2: the second vertex
+   * @return boolean: whether the two vertices provided are neighbots
    */
   public boolean isNeighbor(T v1, T v2) {
     return this.adjList.get(v1).contains(v2);
@@ -104,8 +94,7 @@ public class Graph<T> {
 
   /**
    * Returns the adjacency list of the graph
-   * Returns:
-   *   Map<T, List<T>> the adjacency list of the graph
+   * @return Map<T, List<T>> the adjacency list of the graph
    */
   public Map<T, List<T>> getAdjList() {
     return this.adjList;
