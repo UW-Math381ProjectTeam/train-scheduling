@@ -104,9 +104,8 @@ public class TrainSession<T> {
         List<Movement> convertmovement = (List<Movement>) movements;
         for (Movement move : convertmovement) {
             result = result + move.toString();
-            result = result + " ";
+            result = result + ",";
         }
-        result += "\n";
         return result;
     }
     

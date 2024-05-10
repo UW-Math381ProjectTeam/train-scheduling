@@ -4,8 +4,8 @@ import java.io.IOException;
 
 public class Scheduler{
     public static final boolean DEBUG = false;
+    public static List<Movement> movements;
     public final int PUNISHMENT_VAL = 5;
-
     private static TrainSession<Movement>[] schedule;
 
     public Graph<TrainSession<Movement>> buildGraph(List<TrainSession<Movement>> vertices) {
@@ -76,7 +76,7 @@ public class Scheduler{
             }
         }
 
-        List<Movement> movements = new ArrayList<>();
+        movements = new ArrayList<>();
         for (int i = 0; i < data.size(); i++) {
             String[] movList = data.get(i);
             if (movList.length != 3) {
@@ -133,26 +133,21 @@ public class Scheduler{
             
             schedule = new TrainSession[numTD];
             TrainSession<Movement> testTrainningSession = new TrainSession<>(numMovementEveryday, numTD);
-            buildSessionHelper(testTrainningSession, movements);
+            buildSessionHelper(testTrainningSession);
         }
     }
 
-    private static void buildSessionHelper(TrainSession<Movement> session, List<Movement> movements) {
+    private static void buildSessionHelper(TrainSession<Movement> session) {
         if (session.isFilled()) {
-            System.out.println("Session: \n" + session.printAllMovements());
+            System.out.println("Session:" + session.printAllMovements());
             return;
         }
-        List<Movement> nextMovements = new ArrayList<>();
         for (int i = 0; i < movements.size(); i++) {
             Movement movement = movements.get(i);
-            session.addMovement(movement);
-            for (int j = 0; j < movements.size(); j++) {
-                if (j != i) {
-                    nextMovements.add(movements.get(j));
-                }
+            if (session.addMovement(movement)) {
+                buildSessionHelper(session);
+                session.removeMovement(movement);
             }
-            buildSessionHelper(session, nextMovements);
-            session.removeMovement(movement);
         }
         return;
     }
