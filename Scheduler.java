@@ -1,12 +1,18 @@
 import java.util.*;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveAction;
 import java.io.FileReader;  
 import java.io.IOException;  
 
 public class Scheduler{
     public static final boolean DEBUG = false;
     public static List<Movement> movements;
+    public static int numMovementEveryday;
+    public static int numTD;
     public final int PUNISHMENT_VAL = 5;
     private static TrainSession[] schedule;
+    public static final ForkJoinPool pool = new ForkJoinPool();
+    public static final int CUTOFF = 1;
 
     public Graph<TrainSession> buildGraph(List<TrainSession> vertices) {
         Graph<TrainSession> ans = new Graph<>();
@@ -116,10 +122,10 @@ public class Scheduler{
 
             // generate schedule - get information
             System.out.println("How many movements everyday?");
-            int numMovementEveryday = inputScanner.nextInt();
+            numMovementEveryday = inputScanner.nextInt();
 
             // generate schedule - recursive generation + compute chengfashuzhi
-            int numTD = 0;
+            numTD = 0;
             for (int i = 0; i < trainDays.length; i++) {
                 if (trainDays[i]) {
                     numTD++;
@@ -132,9 +138,14 @@ public class Scheduler{
             
             
             schedule = new TrainSession[numTD];
-            TrainSession testTrainningSession = new TrainSession(numMovementEveryday, numTD);
-            buildSessionHelper(testTrainningSession);
+            // TrainSession testTrainningSession = new TrainSession(numMovementEveryday, numTD);
+            buildSession();
         }
+    }
+
+    private static void buildSession() {
+        CombinationIteratorTask task = new CombinationIteratorTask(0, movements.size());
+        task.compute();
     }
 
     private static void buildSessionHelper(TrainSession session) {
@@ -151,4 +162,47 @@ public class Scheduler{
         }
         return;
     }
+
+
+    public static class CombinationIteratorTask extends RecursiveAction {
+
+        public static final ForkJoinPool pool = new ForkJoinPool();
+        public static final int CUTOFF = 5;
+      
+      
+        public static int allCombos() {
+            pool.invoke(new CombinationIteratorTask(0, movements.size()));
+            return 1;
+        }
+      
+        private final int lo, hi;
+      
+        public void sequential(int lo, int hi) {
+            TrainSession t = new TrainSession(numMovementEveryday, numTD);
+            for (int i = lo; i < hi; i++) {
+                t.addMovement(movements.get(i));
+                buildSessionHelper(t);
+                t.removeMovement(movements.get(i));
+            }
+        }
+      
+        public CombinationIteratorTask(int lo, int hi) {
+            this.lo = lo;
+            this.hi = hi;
+        }
+      
+        protected void compute() {
+          if (this.hi - this.lo <= CUTOFF) {
+            sequential(lo, hi);
+          } else {
+            int mid = lo + (hi - lo) / 2;
+            CombinationIteratorTask left = new CombinationIteratorTask(lo, mid);
+            CombinationIteratorTask right = new CombinationIteratorTask(mid, hi);
+            left.fork();
+            right.compute();
+            left.join();
+          }
+        }
+      }
+      
 }
