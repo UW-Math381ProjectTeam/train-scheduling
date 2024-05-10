@@ -134,21 +134,12 @@ public class Scheduler{
             schedule = new TrainSession[numTD];
             TrainSession<Movement> testTrainningSession = new TrainSession<>(numMovementEveryday, numTD);
             buildSessionHelper(testTrainningSession, movements);
-            // findSchedule(numTD, numMovementEveryday, movements);
         }
     }
-
-    // private static void findSchedule(int numTrainDays, int numMovementsInTS, List<Movement> movements) {
-    //     for (int i = 0; i < numTrainDays; i++) {
-    //         TrainSession<Movement> session = new TrainSession<>(numMovementsInTS, 0);
-    //         schedule[i] = buildSessionHelper(session ,movements);
-    //     }
-    // }
 
     private static void buildSessionHelper(TrainSession<Movement> session, List<Movement> movements) {
         if (session.isFilled()) {
             System.out.println("Session: \n" + session.printAllMovements());
-            // System.out.println("this is the end of the program");
             return;
         }
         List<Movement> nextMovements = new ArrayList<>();
