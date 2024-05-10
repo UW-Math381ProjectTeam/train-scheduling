@@ -69,6 +69,15 @@ public class TrainSession<T> {
         return this.numMovements == other.numMovements 
                   && this.dayNum == other.dayNum 
                   && this.movements.equals(other.movements);
-                  
+
+    }
+
+
+    public List<T> getMovements() {
+        return this.movements;
+    }
+
+    public int getNumMovements() {
+        return this.numMovements;
     }
 }

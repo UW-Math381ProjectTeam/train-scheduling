@@ -100,4 +100,8 @@ public class Graph<T> {
     return this.adjList;
   }
 
+  public Set<T> getVertices() {
+    return this.adjList.keySet();
+  }
+
 }
