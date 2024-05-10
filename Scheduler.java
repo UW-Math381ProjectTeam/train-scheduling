@@ -11,8 +11,6 @@ public class Scheduler{
     public static int numTD;
     public final int PUNISHMENT_VAL = 5;
     private static TrainSession[] schedule;
-    public static final ForkJoinPool pool = new ForkJoinPool();
-    public static final int CUTOFF = 1;
 
     public Graph<TrainSession> buildGraph(List<TrainSession> vertices) {
         Graph<TrainSession> ans = new Graph<>();
