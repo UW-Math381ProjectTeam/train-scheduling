@@ -19,6 +19,10 @@ public class Movement {
         return this.movementTypes;
     }
 
+    public String toString() {
+        return this.name;
+    }
+
     public int getDifficulty() {
       return difficulty;
     }

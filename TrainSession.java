@@ -37,11 +37,33 @@ public class TrainSession<T> {
     }
 
     /**
+     * Add a movement to the session if movement is valid.  
+     * @param movement: the movement to be added
+     * @return boolean: whether the add is successful
+     */
+    public boolean removeMovement(T movement) {
+        if (!this.movements.contains(movement)) {
+            return false;
+        }
+
+        this.movements.remove(movement);
+        return true;
+    }
+
+    /**
      * Returns the current size of the movements list
      * @return int: the current size of the movements list
      */
     public int getCurrSize() {
         return this.movements.size();
+    }
+
+    /**
+     * check if the session is filled or not
+     * @return int: if the session is filled, return true, otherwise return false
+     */
+    public boolean isFilled() {
+        return getCurrSize() == this.numMovements; 
     }
 
     /**
@@ -76,6 +98,18 @@ public class TrainSession<T> {
     public List<T> getMovements() {
         return this.movements;
     }
+
+    public String printAllMovements() {
+        String result = "";
+        List<Movement> convertmovement = (List<Movement>) movements;
+        for (Movement move : convertmovement) {
+            result = result + move.toString();
+            result = result + " ";
+        }
+        result += "\n";
+        return result;
+    }
+    
 
     public int getNumMovements() {
         return this.numMovements;

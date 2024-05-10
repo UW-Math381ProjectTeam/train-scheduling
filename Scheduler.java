@@ -1,12 +1,12 @@
 import java.util.*;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;  
 import java.io.IOException;  
 
 public class Scheduler{
     public static final boolean DEBUG = false;
     public final int PUNISHMENT_VAL = 5;
+
+    private static TrainSession<Movement>[] schedule;
 
     public Graph<TrainSession<Movement>> buildGraph(List<TrainSession<Movement>> vertices) {
         Graph<TrainSession<Movement>> ans = new Graph<>();
@@ -87,27 +87,82 @@ public class Scheduler{
             movements.add(mov);
         }
 
+
         // generate schedule - add train days
-        Boolean[] trainDays = new Boolean[14];
-        Scanner inputScanner = new Scanner(System.in);
-        System.out.println("Welcome to train session scheduling system,");
-        System.out.println("enter train days from a 14 day chunk (1 - 14)");
-        System.out.println("enter integers, seperate by spaces");
+        boolean[] trainDays = new boolean[14];
+        try (Scanner inputScanner = new Scanner(System.in)) {
+            System.out.println("Welcome to train session scheduling system,");
+            System.out.println("enter train days from a 14 day chunk (1 - 14)");
+            System.out.println("enter integers, seperate by spaces");
 
-        String newTrainDays = inputScanner.nextLine();
-        System.out.println("Train days are: " + newTrainDays);
+            String newTrainDays = inputScanner.nextLine();
+            System.out.println("Train days are: " + newTrainDays);
 
-        Scanner trainDayScanner = new Scanner(newTrainDays);
+            try (Scanner trainDayScanner = new Scanner(newTrainDays)) {
+                while(trainDayScanner.hasNextInt()) {
+                    int newTrainDay = trainDayScanner.nextInt();
 
-        while(trainDayScanner.hasNextInt()) {
-            int newTrainDay = trainDayScanner.nextInt();
+                    if (newTrainDay >= 15 || newTrainDay < 1) {
+                        throw new IllegalArgumentException("Wrong train day: " + newTrainDay);
+                    }
 
-            if (newTrainDay > 15 || newTrainDay < 1) {
-                throw new IllegalArgumentException("Wrong train day: " + newTrainDay);
+                    if (DEBUG) {
+                        System.out.println("Add new train day: " + newTrainDay);
+                    }
+
+                    trainDays[newTrainDay - 1] = true;
+                }
             }
 
-            System.out.println("Add new train day: " + newTrainDay);
-            trainDays[newTrainDay] = true;
+            // generate schedule - get information
+            System.out.println("How many movements everyday?");
+            int numMovementEveryday = inputScanner.nextInt();
+
+            // generate schedule - recursive generation + compute chengfashuzhi
+            int numTD = 0;
+            for (int i = 0; i < trainDays.length; i++) {
+                if (trainDays[i]) {
+                    numTD++;
+                }
+            }
+
+            if (DEBUG) {
+                System.out.println("Total Train Days: " + numTD + " , every train day, do " + numMovementEveryday + " movements");
+            }
+            
+            
+            schedule = new TrainSession[numTD];
+            TrainSession<Movement> testTrainningSession = new TrainSession<>(numMovementEveryday, numTD);
+            buildSessionHelper(testTrainningSession, movements);
+            // findSchedule(numTD, numMovementEveryday, movements);
         }
+    }
+
+    // private static void findSchedule(int numTrainDays, int numMovementsInTS, List<Movement> movements) {
+    //     for (int i = 0; i < numTrainDays; i++) {
+    //         TrainSession<Movement> session = new TrainSession<>(numMovementsInTS, 0);
+    //         schedule[i] = buildSessionHelper(session ,movements);
+    //     }
+    // }
+
+    private static void buildSessionHelper(TrainSession<Movement> session, List<Movement> movements) {
+        if (session.isFilled()) {
+            System.out.println("Session: \n" + session.printAllMovements());
+            // System.out.println("this is the end of the program");
+            return;
+        }
+        List<Movement> nextMovements = new ArrayList<>();
+        for (int i = 0; i < movements.size(); i++) {
+            Movement movement = movements.get(i);
+            session.addMovement(movement);
+            for (int j = 0; j < movements.size(); j++) {
+                if (j != i) {
+                    nextMovements.add(movements.get(j));
+                }
+            }
+            buildSessionHelper(session, nextMovements);
+            session.removeMovement(movement);
+        }
+        return;
     }
 }
