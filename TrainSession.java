@@ -130,8 +130,11 @@ public class TrainSession {
         return result;
     }
     
-
     public int getNumMovements() {
         return this.numMovements;
+    }
+
+    public int getDayNum() {
+        return this.dayNum;
     }
 }

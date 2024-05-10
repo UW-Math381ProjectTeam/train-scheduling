@@ -45,11 +45,11 @@ public class Graph<T> {
    */
   public void addEdge(T v1, T v2) {
     if (this.adjList.get(v1) == null) {
-      throw new IllegalArgumentException("V1 is not in Map!");
+      throw new IllegalArgumentException("V1 is not in Graph!");
     }
 
     if (this.adjList.get(v2) == null) {
-      throw new IllegalArgumentException("V2 is not in Map!");
+      throw new IllegalArgumentException("V2 is not in Graph!");
     }
 
     this.adjList.get(v1).add(v2);
@@ -102,6 +102,33 @@ public class Graph<T> {
 
   public Set<T> getVertices() {
     return this.adjList.keySet();
+  }
+
+  public void removeEdge(T v1, T v2) {
+    if (this.adjList.get(v1) == null) {
+      throw new IllegalArgumentException("V1 is not in Graph!");
+    }
+
+    if (this.adjList.get(v2) == null) {
+      throw new IllegalArgumentException("V2 is not in Graph!");
+    }
+
+    this.adjList.get(v1).remove(this.adjList.get(v1).indexOf(v2));
+    this.adjList.get(v2).remove(this.adjList.get(v2).indexOf(v1));
+  }
+
+  public void removeVertex(T v) {
+    if (this.adjList.get(v) == null) {
+      throw new IllegalArgumentException("V is not in Graph!");
+    }
+
+    this.adjList.remove(v);
+
+    for (T element : this.adjList.keySet()) {
+      if (this.adjList.get(element).contains(v)) {
+        this.adjList.get(element).remove(this.adjList.get(element).indexOf(v));
+      }
+    }
   }
 
 }
