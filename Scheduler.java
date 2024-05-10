@@ -51,6 +51,7 @@ public class Scheduler{
 
 
     public static void main(String[] args) {
+        // read data
         List<String[]> data = new ArrayList<>();
         try {
             Scanner file = new Scanner(new FileReader("Test.csv"));  
@@ -74,7 +75,6 @@ public class Scheduler{
                 System.out.println("");
             }
         }
-        
 
         List<Movement> movements = new ArrayList<>();
         for (int i = 0; i < data.size(); i++) {
@@ -86,8 +86,28 @@ public class Scheduler{
             Movement mov = new Movement(movList[0], movList[1].split(" "), Integer.parseInt(movList[2]));
             movements.add(mov);
         }
-        
+
+        // generate schedule - add train days
+        Boolean[] trainDays = new Boolean[14];
+        Scanner inputScanner = new Scanner(System.in);
+        System.out.println("Welcome to train session scheduling system,");
+        System.out.println("enter train days from a 14 day chunk (1 - 14)");
+        System.out.println("enter integers, seperate by spaces");
+
+        String newTrainDays = inputScanner.nextLine();
+        System.out.println("Train days are: " + newTrainDays);
+
+        Scanner trainDayScanner = new Scanner(newTrainDays);
+
+        while(trainDayScanner.hasNextInt()) {
+            int newTrainDay = trainDayScanner.nextInt();
+
+            if (newTrainDay > 15 || newTrainDay < 1) {
+                throw new IllegalArgumentException("Wrong train day: " + newTrainDay);
+            }
+
+            System.out.println("Add new train day: " + newTrainDay);
+            trainDays[newTrainDay] = true;
+        }
     }
-
-
 }
