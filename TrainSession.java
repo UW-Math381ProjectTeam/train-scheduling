@@ -1,10 +1,11 @@
 import java.util.*;
 
-public class TrainSession<T> {
-
+public class TrainSession {
+    private final int THRESHOLD = 3;
     private int numMovements;
     private int dayNum;
-    private List<T> movements;
+    private List<Movement> movements;
+    private Map<String, Integer> countParts;
 
     /**
      * Constructor of TrainSession. 
@@ -14,7 +15,8 @@ public class TrainSession<T> {
     public TrainSession(int numMovements, int dayNum) {
         this.numMovements = numMovements;
         this.dayNum = dayNum;
-        List<T> movements = new ArrayList<>();
+        List<Movement> movements = new ArrayList<>();
+        this.countParts = new HashMap<>();
         this.movements = movements;
     }
 
@@ -23,9 +25,15 @@ public class TrainSession<T> {
      * @param movement: the movement to be added
      * @return boolean: whether the add is successful
      */
-    public boolean addMovement(T movement) {
+    public boolean addMovement(Movement movement) {
         if (this.movements.contains(movement)) {
             return false;
+        }
+
+        for (String element : movement.getType()) {
+            if (this.countParts.get(element) != null && this.countParts.get(element) >= this.THRESHOLD) {
+                return false;
+            } 
         }
 
         if (this.movements.size() >= this.numMovements) {
@@ -33,6 +41,15 @@ public class TrainSession<T> {
         }
 
         this.movements.add(movement);
+
+        for (String element : movement.getType()) {
+            if (this.countParts.containsKey(element)) {
+                countParts.put(element, countParts.get(element) + 1);
+            } else {
+                countParts.put(element, 1);
+            }
+        }
+        
         return true;
     }
 
@@ -41,9 +58,13 @@ public class TrainSession<T> {
      * @param movement: the movement to be added
      * @return boolean: whether the add is successful
      */
-    public boolean removeMovement(T movement) {
+    public boolean removeMovement(Movement movement) {
         if (!this.movements.contains(movement)) {
             return false;
+        }
+
+        for (String element : movement.getType()) {
+            countParts.put(element, countParts.get(element) - 1);
         }
 
         this.movements.remove(movement);
@@ -79,7 +100,7 @@ public class TrainSession<T> {
         return "Day " + this.dayNum + ": " + list;
     }
 
-    public boolean equals(TrainSession<T> other) {
+    public boolean equals(TrainSession other) {
         if (other == this) {
             return true;
         }
@@ -95,7 +116,7 @@ public class TrainSession<T> {
     }
 
 
-    public List<T> getMovements() {
+    public List<Movement> getMovements() {
         return this.movements;
     }
 

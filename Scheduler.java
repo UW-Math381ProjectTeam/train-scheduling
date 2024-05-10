@@ -6,12 +6,12 @@ public class Scheduler{
     public static final boolean DEBUG = false;
     public static List<Movement> movements;
     public final int PUNISHMENT_VAL = 5;
-    private static TrainSession<Movement>[] schedule;
+    private static TrainSession[] schedule;
 
-    public Graph<TrainSession<Movement>> buildGraph(List<TrainSession<Movement>> vertices) {
-        Graph<TrainSession<Movement>> ans = new Graph<>();
+    public Graph<TrainSession> buildGraph(List<TrainSession> vertices) {
+        Graph<TrainSession> ans = new Graph<>();
 
-        for (TrainSession<Movement> t : vertices) {
+        for (TrainSession t : vertices) {
             ans.addVertex(t);
         }
 
@@ -22,12 +22,12 @@ public class Scheduler{
         return ans;
     }
 
-    public int calcPunishment(Graph<TrainSession<Movement>> g) {
-        Set<TrainSession<Movement>> vertices = g.getVertices();
+    public int calcPunishment(Graph<TrainSession> g) {
+        Set<TrainSession> vertices = g.getVertices();
         int punishment = 0;
 
-        for (TrainSession<Movement> t1 : vertices) {
-            for (TrainSession<Movement> t2 : vertices) {
+        for (TrainSession t1 : vertices) {
+            for (TrainSession t2 : vertices) {
                 if (!t1.equals(t2) && g.isNeighbor(t1, t2)) {
                     List<Movement> list1 = t1.getMovements();
                     List<Movement> list2 = t2.getMovements();
@@ -132,14 +132,14 @@ public class Scheduler{
             
             
             schedule = new TrainSession[numTD];
-            TrainSession<Movement> testTrainningSession = new TrainSession<>(numMovementEveryday, numTD);
+            TrainSession testTrainningSession = new TrainSession(numMovementEveryday, numTD);
             buildSessionHelper(testTrainningSession);
         }
     }
 
-    private static void buildSessionHelper(TrainSession<Movement> session) {
+    private static void buildSessionHelper(TrainSession session) {
         if (session.isFilled()) {
-            System.out.println("Session:" + session.printAllMovements());
+            // System.out.println("Session:" + session.printAllMovements());
             return;
         }
         for (int i = 0; i < movements.size(); i++) {

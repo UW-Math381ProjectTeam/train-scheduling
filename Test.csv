@@ -4,13 +4,13 @@ Back Squat,"legs biceps",114
 Get set position,None,514
 Leg Extension,legs,2
 Leg Bicept Curl,legs,3
-Power clean,All,5
+Power clean,"legs shoulders triceps chest back biceps core",5
 Seated Calf Raise,legs,7
-Squat clean,All,11
+Squat clean,"legs shoulders triceps chest back biceps core",11
 Leg Press,legs,13
-Power snatch,All,17
+Power snatch,"legs shoulders triceps chest back biceps core",17
 Forward Lunge,legs,19
-Squat snatch,All,23
+Squat snatch,"legs shoulders triceps chest back biceps core",23
 Step-ups,legs,29
 Press,"chest shoulders triceps",31
 Bench Press,"chest shoulders triceps",37
@@ -24,11 +24,11 @@ Power jerk,"Legs core back tricep",53
 Good Morning,"back core leg",59
 Jerk,"Legs core back tricep",61
 Russian Twists,Core,67
-Clean pull,All,71
+Clean pull,"legs shoulders triceps chest back biceps core",71
 Hyperextensions,"Back legs",79
-Snatch pull,All,83
+Snatch pull,"legs shoulders triceps chest back biceps core",83
 Dumbbell side bend,Core,89
-Pull from hang(or blocks),All,91
+Pull from hang(or blocks),"legs shoulders triceps chest back biceps core",91
 Bicep Curl,Biceps,97
 Dead lift,"Legs core back",101
 Triceps Press Down,Triceps,1
